@@ -127,6 +127,7 @@ int board_early_init_f(void)
 	writel(0x000007FF, &gpio->gphup);
 
 	/* RAADR0/GPA0, nRCS1/GPA12, EINT15/GPG7,ÐèÒªÑ¡ÔñÎª¸´ÓÃ¹¦ÄÜ */
+	/* Set EBI Registers */
 	cs8900_pre_init();			/* ÎªLAN9220³õÊ¼»¯SMC,GPIO¿Ú³õÊ¼»¯ÔÚÄÄå */
 
 	return 0;
@@ -173,6 +174,7 @@ int board_init(void)
 	/* adress of boot parameters */
 	gd->bd->bi_boot_params = 0x30000100;
 
+	/* ICACHE DCACHE */	
 	icache_enable();
 	dcache_enable();
 

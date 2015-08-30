@@ -65,6 +65,7 @@ static inline void dram_bank_mmu_setup(int bank)
 }
 
 /* to activate the MMU we need to set up virtual memory: use 1M areas */
+/* ÉèÖÃÒ³±í */
 static inline void mmu_setup(void)
 {
 	u32 *page_table = (u32 *)gd->tlb_addr;

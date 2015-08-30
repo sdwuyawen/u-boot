@@ -257,7 +257,6 @@ copyex:
 	bl put_start_info
 
 /* 3. 初始化SDRAM */
-
 	bl sdr_ctrl_asm_init			/* 友善之臂的SDRAM初始化 */
 //	bl SDRAM_Init					/* csdn裸机教程的SDRAM初始化 */
 	bl memory_test				/* 测试SDRAM */
@@ -269,6 +268,9 @@ copyex:
 	 * not when booting from ram!
 	 */
 #ifndef CONFIG_SKIP_LOWLEVEL_INIT
+	/* 清I/D Cache
+	 * 关闭MMU
+	 */
 	bl	cpu_init_crit
 #endif
 
@@ -321,6 +323,7 @@ delay_loop:
 								/* ldr不是伪汇编 */
 	ldr r2, _bss_start_ofs			/* 获取bootloader总长度(不包含bss段) */
 	
+	/* 把代码从NAND复制到SDRAM */
 	bl copy_code_to_sdram		/* nand src, sdram dst, len */
 	bl clean_bss
 
@@ -331,6 +334,7 @@ delay_loop:
 	mov r0, #5
 	bl put_start_info
 
+	/* 从stepping stone跳转到SDRAM运行 */
 	ldr pc, =call_board_init_f		/* 伪指令，编译成mov pc,数值 或者 ldr pc,label
 									跳转到SDRAM继续执行 */
 
@@ -345,15 +349,18 @@ call_board_init_f:
 	mov r0, #6
 	bl put_start_info
 	
+	/* 这里仍未开启MMU，会设置base_sp */
 	ldr	r0,=0x00000000
 	bl	board_init_f
 
-	/* unsigned int 的值存在R0里，正好给board_init_r */
+	/* unsigned int 的值存在R0里，正好给board_init_r
+	 * r1 = 0x33f00000
+	 */
 	ldr r1, _TEXT_BASE
 	/* 重新设置栈 */
 	ldr sp, base_sp
 	
-	/* 调用第二阶段代码 */
+	/* 调用第二阶段代码，启动MMU */
 	bl board_init_r
 
 /*
