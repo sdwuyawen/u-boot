@@ -368,6 +368,7 @@ static int dm9000_init(struct eth_device *dev, bd_t *bd)
 	/* Enable TX/RX interrupt mask */
 	DM9000_iow(DM9000_IMR, IMR_PAR);
 
+#if 0
 	i = 0;
 	while (!(dm9000_phy_read(1) & 0x20)) {	/* autonegation complete bit */
 		udelay(1000);
@@ -377,6 +378,7 @@ static int dm9000_init(struct eth_device *dev, bd_t *bd)
 			return 0;
 		}
 	}
+#endif
 
 	/* see what we've got */
 	lnk = dm9000_phy_read(17) >> 12;
@@ -624,6 +626,7 @@ dm9000_phy_write(int reg, u16 value)
 	DM9000_DBG("dm9000_phy_write(reg:0x%x, value:0x%x)\n", reg, value);
 }
 
+/* 能输入中文吗?  */
 int dm9000_initialize(bd_t *bis)
 {
 	struct eth_device *dev = &(dm9000_info.netdev);
