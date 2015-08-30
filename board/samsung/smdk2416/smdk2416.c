@@ -97,29 +97,28 @@ static void dm9000_pre_init(void)
 //    writel(0xf, S3C_SSMC_SMBIDCYR2);
 	SMBIDCYR2_REG = 0x0f;
 
-	/* ¿¿ */
-    /* Bank2 Read Wait State cont. = 14 clk          Tacc? */
-    /* WSTRD¿¿¿nCS¿¿¿nRD¿¿¿¿¿¿¿nRD¿¿¿¿¿¿WSTOEN¿¿¿WSTOEN¿¿<=WSTRD */
+	/* Bank2 Read Wait State cont. = 14 clk          Tacc? */
+	/* WSTRD±íÊ¾´ÓnCSÓÐÐ§µ½nRDÎÞÐ§×Ü³¤¶È£¬¼´nRD×Ü³¤¶È£¬°üº¬WSTOEN²¿·Ö£¬WSTOEN±ØÐë<=WSTRD */
 //    writel(12, S3C_SSMC_SMBWSTRDR2);
 	SMBWSTRDR2_REG = 12;
 
-    /* Bank2 Write Wait State ctrl. */
-    /* WSTWR¿¿¿nCS¿¿¿nWE¿¿¿¿¿¿¿nWR¿¿¿¿¿¿WSTWEN¿¿¿WSTWEN¿¿<=WSTWR */
+	/* Bank2 Write Wait State ctrl. */
+	/* WSTWR±íÊ¾´ÓnCSÓÐÐ§µ½nWEÎÞÐ§×Ü³¤¶È£¬¼´nWR×Ü³¤¶È£¬°üº¬WSTWEN²¿·Ö£¬WSTWEN±ØÐë<=WSTWR */
 //    writel(12, S3C_SSMC_SMBWSTWRR2);
 	SMBWSTWRR2_REG = 12;
 
     /* Bank2 Output Enable Assertion Delay ctrl.     Tcho? */
-    /* nCS¿¿¿nOE¿¿¿¿¿¿¿¿¿WSTRD¿¿¿¿ */
+	/* nCSÓÐÐ§µ½nOEÓÐÐ§Ö®¼äµÄ¼ä¸ô£¬ºÍWSTRDÅäÌ×Ê¹ÓÃ */
 //    writel(2, S3C_SSMC_SMBWSTOENR2);
 	SMBWSTOENR2_REG = 2;
 
 
     /* Bank2 Write Enable Assertion Delay ctrl. */
-    /* nCS¿¿¿nWE¿¿¿¿¿¿¿¿¿WSTWR¿¿¿¿ */
+	/* nCSÓÐÐ§µ½nWEÓÐÐ§Ö®¼äµÄ¼ä¸ô£¬ºÍWSTWRÅäÌ×Ê¹ÓÃ */
 //    writel(2, S3C_SSMC_SMBWSTWENR2);
 	SMBWSTWENR2_REG = 2;
 
-    /* ¿ADDR¿¿¿nCS¿¿¿¿¿¿delay¿¿¿¿SMBCR¿DELAYnCS¿¿ */
+	/* ÔÚADDRÐÅºÅºÍnCSÐÅºÅÖ®¼ä²åÈëdelay£¬ÊýÖµÓÉSMBCRÖÐDELAYnCSÈ·¶¨ */
 //    val = readl(S3C_SSMC_SMBCR2);
 	val = SMBCR2_REG;
 
@@ -128,20 +127,19 @@ static void dm9000_pre_init(void)
 //    writel(val, S3C_SSMC_SMBCR2);
 	SMBCR2_REG = val;
 
-
-    /* bit2¿¿¿nWait,=1¿¿¿¿
-     * =0¿¿WSTRD,WSTWR,WSTOEN,WSTWEN¿¿
-     * =1¿¿SMBCR.DRnOWE=1¿
-     *             nCS¿nOE¿¿¿¿WSTOEN¿¿¿¿¿¿¿1
-     *             nCS¿nWE¿¿¿¿WSTWEN¿¿¿¿¿¿¿1
-     *       SMBCR.DRnCS=1¿
-     *             ADDR Signal¿nCS¿¿¿¿¿¿SMBCR.DELAYnCS¿¿
-     *
-     */
-    /* bit1¿¿nWait¿¿¿¿¿¿0¿¿¿¿¿¿¿ */
-    /* bit0¿RBLE,=1¿¿¿read¿nBE[1:0]¿¿¿0
-     * nBE[1:0]¿¿¿¿¿¿¿
-     */
+	/* bit2ÊÇÊ¹ÄÜnWait,=1±íÊ¾Ê¹ÄÜ
+       * =0Ê±£¬WSTRD,WSTWR,WSTOEN,WSTWENÓÐÐ§
+       * =1Ê±£¬SMBCR.DRnOWE=1Ê±
+       *             nCSµ½nOEµÄÊ±¼äÓÉWSTOENÈ·¶¨£¬±ØÐë´óÓÚ1
+       *             nCSµ½nWEµÄÊ±¼äÓÉWSTWENÈ·¶¨£¬±ØÐë´óÓÚ1
+       *       SMBCR.DRnCS=1Ê±
+       *             ADDR SignalºÍnCSÖ®¼äµÄÊ±¼äÓÉSMBCR.DELAYnCSÈ·¶¨
+       *
+       */
+      /* bit1ÅäÖÃnWaitµÄ¼«ÐÔ£¬Ä¬ÈÏ0±íÊ¾µÍµçÆ½ÓÐÐ§ */
+      /* bit0ÊÇRBLE,=1±íÊ¾ÔÚreadÊ±nBE[1:0]±£³ÖÎª0
+       * nBE[1:0]ÔÚ°å×ÓÉÏÎ´Á¬½Ó
+       */
 //    val = readl(S3C_SSMC_SMBCR2);
 	val = SMBCR2_REG;
     val |=  ((1<<2)|(1<<0));    /* .bit2 = 1, .bit0 = 1 */
@@ -151,15 +149,15 @@ static void dm9000_pre_init(void)
 	SMBCR2_REG = val;
 
     /* SMAddrValid = always High when Read/Write
-     * RSMAVD¿¿¿¿
-     */
+     * RSMAVD±£³ÖÎª¸ß 
+	 */
 //    val = readl(S3C_SSMC_SMBCR2);
 	val = SMBCR2_REG;
     val &= ~((3<<20)|(3<<12));
 //    writel(val, S3C_SSMC_SMBCR2);
 	SMBCR2_REG = val;
 
-    /* ¿¿¿¿,8 */
+	/* ÉèÖÃÎ»¿í,8 */
 //    val = readl(S3C_SSMC_SMBCR2);
 	val = SMBCR2_REG;
     val &= ~(3<<4);
@@ -174,7 +172,6 @@ static void dm9000_pre_init(void)
 	SMBCR2_REG = val;
 }
 
-/* µÚÒ»½×¶ÎÔÚinit_sequenceÖÐ±»µ÷ÓÃ */
 int board_early_init_f(void)
 {
 	struct s3c24x0_clock_power * const clk_power =
@@ -215,16 +212,16 @@ int board_early_init_f(void)
 	writel(0x002AFAAA, &gpio->gphcon);
 	writel(0x000007FF, &gpio->gphup);
 
-	/* RAADR0/GPA0, nRCS1/GPA12, EINT15/GPG7,ÐèÒªÑ¡ÔñÎª¸´ÓÃ¹¦ÄÜ */
+	/* RAADR0/GPA0, nRCS1/GPA12, EINT15/GPG7, */
 	/* Set EBI Registers */
-	cs8900_pre_init();			/* ÎªLAN9220³õÊ¼»¯SMC,GPIO¿Ú³õÊ¼»¯ÔÚÄÄå */
+	cs8900_pre_init();		
 	dm9000_pre_init();
 
 	return 0;
 }
 
 
-/* Çå³ýSUBSRCPND,SRCPND1,SRCPND2,INTPND1,INTPND2ÖÐËùÓÐÖÐ¶ÏÉêÇë */
+/* SUBSRCPND,SRCPND1,SRCPND2,INTPND1,INTPND2 */
 #define SUBSRCPND	0x4A000018
 #define SRCPND1		0x4A000000
 #define INTPND1		0x4A000010
@@ -268,7 +265,7 @@ int board_init(void)
 	icache_enable();
 	dcache_enable();
 
-	board_int_clear();		/* Çå³ýSUBSRCPND,SRCPND1,SRCPND2,INTPND1,INTPND2ÖÐËùÓÐÖÐ¶ÏÉêÇë */
+	board_int_clear();		/* SUBSRCPND,SRCPND1,SRCPND2,INTPND1,INTPND2 */
 
 	return 0;
 }
