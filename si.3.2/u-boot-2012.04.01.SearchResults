@@ -1,7 +1,0 @@
----- serial_init Æ¥Åä (6 in 5 ÎÄ¼þ) ----
-Board.c (arch\arm\lib):	serial_init,		/* serial communications setup */
-Common.h (include):int	serial_init   (void);
-Serial.c (common):int serial_init(void)
-Serial.c (common):		ret = serial_init();
-Serial.c (drivers\serial):int serial_init (void)
-Serial_s3c24x0.c (drivers\serial):int serial_init(void)
